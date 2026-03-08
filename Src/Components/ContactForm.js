@@ -1,10 +1,10 @@
-import {useState, useEffect} from "react";
-import { TextInput, Button } from "react-native";
+import {useState} from "react";
+import { TextInput, Button } from "react-native-paper";
 
-const ContactForm = ({ contact = {}, onSubmit }) => {
-    const [name, setName] = useState(contact.name || "");
-    const [phone, setPhone] = useState(contact.phone || "");
-    const [email, setEmail] = useState(contact.email || "");
+const ContactForm = ({ contact, onSubmit }) => {
+    const [name, setName] = useState(contact?.name || "");
+    const [phone, setPhone] = useState(contact?.phone || "");
+    const [email, setEmail] = useState(contact?.email || "");
 
     const handleSubmit = () => {
         const validateAndSetContact = {
@@ -13,7 +13,7 @@ const ContactForm = ({ contact = {}, onSubmit }) => {
             email: email.trim(),
         };
         onSubmit(validateAndSetContact);
-        
+
     };
 
     return (
@@ -29,6 +29,7 @@ const ContactForm = ({ contact = {}, onSubmit }) => {
                 label="Phone"
                 value={phone}
                 onChangeText={setPhone}
+                keyboardType="phone-pad"
                 mode= "outlined"
                 style={{ marginBottom: 8 }}
             />
@@ -36,10 +37,13 @@ const ContactForm = ({ contact = {}, onSubmit }) => {
                 label="Email"
                 value={email}
                 onChangeText={setEmail}
+                keyboardType="email-address"
                 mode= "outlined"
                 style={{ marginBottom: 8 }}
             />
-            <Button title="Save" onPress={handleSubmit} />
+            <Button mode="contained" onPress={() => handleSubmit()} disabled={!name || !phone}>
+                Save
+            </Button>
         </>
     );
 };
