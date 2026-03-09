@@ -1,23 +1,19 @@
 import { View } from 'react-native';
 import ContactForm from '../Components/ContactForm';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useDispatch, useSelector } from 'react-redux';
-import { addContactAction, editContactAction } from '../store/store';
+import { addContact, editContact } from '../Service/ContactService';
 
 const ContactFormScreen = ({ navigation, route }) => {
     const insets = useSafeAreaInsets();
     const { contact } = route.params ?? {};
-    const dispatch = useDispatch();
-    const contacts = useSelector(state => state.contacts);
+
 
     const onSubmit =  newContact => {
-        if (contact?._id !== undefined) {
-            console.log('Editing contact:', contact._id, newContact);
-            dispatch(editContactAction(contact._id, newContact));
+        console.log('onSubmit', newContact);
+        if (contact?.id !== undefined) {
+            editContact(contact.id, newContact);
         } else {
-            const newId = contacts.length > 0 ? Math.max(...contacts.map(c => c._id)) + 1 : 1;
-            console.log('Adding contact:', newContact);
-            dispatch(addContactAction({...newContact, _id: newId}));
+            addContact(newContact);
         }
         navigation.navigate('ContactList');
     }

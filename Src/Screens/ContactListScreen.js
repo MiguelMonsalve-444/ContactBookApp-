@@ -3,12 +3,20 @@ import{ FAB } from 'react-native-paper';
 import ContactListItem from '../Components/ContactListItem';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { setContacts } from '../Service/ContactService';
+
 
 const ContactListScreen = ({ navigation }) => {
 const contacts = useSelector(state => state.contacts);
 const insets = useSafeAreaInsets();
 
-
+useEffect (() => {
+    const fetchAllContacts = async () => {
+     await setContacts();
+    };
+     fetchAllContacts();
+}, []);
 const renderItem = ({ item }) => (
     <ContactListItem
         contact={item}
@@ -22,7 +30,7 @@ return (
         {/* render FlatList of contacts */}
         <FlatList
         data={contacts}
-        keyExtractor={(item) => item._id.toString()}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
         />
         <FAB

@@ -6,17 +6,20 @@ import ContactViewScreen from "./Screens/ContactViewScreen";
 import ContactFormScreen from "./Screens/ContactFormScreen"; 
 import {Provider as ReduxProvider} from 'react-redux';
 import {store} from './store/store';
-import { ContactsProvider } from './store/ContactsContext';
+import { useEffect } from "react";
+import { initDB } from "./db/ContactsRepository";
 
 
 const Stack = createNativeStackNavigator();
 
 
 export default function App() {
+    useEffect (()=> {
+     initDB();
+    }, []);
      return (
         <PaperProvider>
             <ReduxProvider store={store}>
-                <ContactsProvider>
                 <NavigationContainer>
                     <Stack.Navigator initialRouteName="ContactList">
                     <Stack.Screen 
@@ -40,7 +43,6 @@ export default function App() {
 
                     </Stack.Navigator>
                 </NavigationContainer>
-                </ContactsProvider>
             </ReduxProvider>
         </PaperProvider>
     );

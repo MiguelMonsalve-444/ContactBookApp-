@@ -1,21 +1,32 @@
-import {store, addContactAction, editContactAction, removeContactAction} from '../store/store';
+import {
+    store,
+    addContactAction,
+    setContactsAction,
+    editContactAction,
+    removeContactAction} from '../store/store';
+import {
+    createContact,
+    readContacts,
+    updateContact,
+    deleteContact
+ } from '../db/ContactsRepository';
 
-export const contaxtContext = createContext();
-
-export const addContact = (contact) => {
-    //addConact in db
-    console.log('Service:',contact);
-    const newId = store.getState().contacts.length + 1; //generate new id
+export const addContact = async contact => {
+    const newId = await createContact(contact);
     store.dispatch(addContactAction({...contact, id: newId}));
 
 };
-
-export const editContact = (id, newData) => {
-    //UpdateContact in db
+export const setContacts = async () => {
+    //No recive ningun parametro y lo toma del data base y lo setea en el store
+    const allContacts = await readContacts();
+    store.dispatch(setContactsAction(allContacts));
+}; 
+export const editContact = async (id, newData) => {
+    await updateContact(id, newData);
     store.dispatch(editContactAction(id, newData));
 };
 
-export const removeContact = (id) => {
-    //removeContact in db
+export const removeContact = async id => {
+     await deleteContact(id);
     store.dispatch(removeContactAction(id));
 };

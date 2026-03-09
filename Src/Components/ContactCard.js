@@ -1,6 +1,7 @@
 import { Card, Text, Avatar, IconButton } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { removeContactRealm } from '../db/Realm';
+import { removeContact } from '../Service/ContactService';
+
 const ContactCard = ({ contact }) => {
     const navigation = useNavigation();
     return (
@@ -22,8 +23,8 @@ const ContactCard = ({ contact }) => {
                     icon="delete"
                     size={20} 
                     accessibilityLabel="Remove contact"
-                    onPress={() => {
-                        removeContactRealm(contact._id);
+                    onPress={async () => {
+                        await removeContact(contact.id);
                         navigation.navigate('ContactList');
                     }}
                 />
