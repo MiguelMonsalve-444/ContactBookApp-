@@ -8,14 +8,18 @@ const ContactFormScreen = ({ navigation, route }) => {
     const { contact } = route.params ?? {};
 
 
-    const onSubmit =  newContact => {
+    const onSubmit = async newContact => {
         console.log('onSubmit', newContact);
-        if (contact?.id !== undefined) {
-            editContact(contact.id, newContact);
-        } else {
-            addContact(newContact);
+        try {
+            if (contact?.id !== undefined) {
+                await editContact(contact.id, newContact);
+            } else {
+                await addContact(newContact);
+            }
+            navigation.navigate('ContactList');
+        } catch (error) {
+            console.log('Error saving contact:', error);
         }
-        navigation.navigate('ContactList');
     }
 
     

@@ -8,6 +8,7 @@ import {Provider as ReduxProvider} from 'react-redux';
 import {store} from './store/store';
 import { useEffect } from "react";
 import { initDB } from "./db/ContactsRepository";
+import { initNetworkListener, cleanupNetworkListener } from "./Service/MockSyncService";
 
 
 const Stack = createNativeStackNavigator();
@@ -15,7 +16,15 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
     useEffect (()=> {
-     initDB();
+        // Inicializar DB
+        initDB();
+        // Inicializar listener de red para sincronización
+        initNetworkListener();
+        
+        // Cleanup al desmontar
+        return () => {
+            cleanupNetworkListener();
+        };
     }, []);
      return (
         <PaperProvider>
